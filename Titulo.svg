@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 220" width="100%" height="100%">
+  <!-- 1. Imagen de fondo (Debe contener el rojo, los engranajes y el logo USAT) -->
+  <image href="https://raw.githubusercontent.com/richardiman/recursoejemplo/main/FI.png" x="0" y="0" width="1000" height="220" preserveAspectRatio="xMidYMid slice" />
+
+  <!-- 2. Textos Principales -->
+  <!-- Título principal (Color beige) -->
+  <text id="txtCurso" x="50" y="65" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="bold" fill="#f1c8a6" text-anchor="start">
+    CARGANDO CURSO...
+  </text>
+  
+  <!-- Subtítulo / Grupo (Color beige) -->
+  <text id="txtGrupo" x="50" y="100" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="bold" fill="#f1c8a6" text-anchor="start">
+    Cargando grupo...
+  </text>
+
+  <!-- 3. Caja oscura para el docente -->
+  <!-- Fondo semi-transparente oscuro -->
+  <rect x="45" y="115" width="370" height="60" fill="#1a0505" opacity="0.8" />
+  <!-- Borde rojo izquierdo -->
+  <rect x="45" y="115" width="6" height="60" fill="#d62828" />
+  
+  <!-- Texto Docente (Blanco) -->
+  <text id="txtDocente" x="60" y="140" font-family="'Segoe UI', Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="start">
+    Docente: Cargando...
+  </text>
+  
+  <!-- Icono vectorial de sobre de correo (Dibujado directamente en SVG) -->
+  <path d="M60 152 v 14 h 20 v -14 z m 10 7 l -8 -5 h 16 z" fill="#ffffff" />
+  
+  <!-- Texto Correo (Blanco) -->
+  <text id="txtCorreo" x="88" y="165" font-family="'Segoe UI', Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="start">
+    Cargando correo...
+  </text>
+
+  <!-- 4. Script para leer el archivo de texto estructurado por líneas -->
+  <script type="text/javascript">
+    <![CDATA[
+      const urlTexto = 'https://raw.githubusercontent.com/richardiman/recursoejemplo/main/contenido.txt';
+      
+      // Añadimos un parámetro de tiempo a la URL para evitar que el navegador guarde el texto viejo en caché
+      fetch(urlTexto + '?t=' + new Date().getTime())
+        .then(response => {
+          if (!response.ok) throw new Error('Error al conectar con GitHub');
+          return response.text();
+        })
+        .then(data => {
+          // Dividimos el texto por cada salto de línea (\n)
+          const lineas = data.split('\n');
+          
+          // Asignamos cada línea a su respectivo elemento en el diseño
+          if(lineas[0]) document.getElementById('txtCurso').textContent = lineas[0].trim();
+          if(lineas[1]) document.getElementById('txtGrupo').textContent = lineas[1].trim();
+          if(lineas[2]) document.getElementById('txtDocente').textContent = 'Docente: ' + lineas[2].trim();
+          if(lineas[3]) document.getElementById('txtCorreo').textContent = lineas[3].trim();
+        })
+        .catch(error => {
+          console.error('Error al cargar:', error);
+        });
+    ]]>
+  </script>
+</svg>
